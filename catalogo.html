@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Libros - Biblioteca Universitaria</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f9f9f9; }
+        h1, h2 { color: #333; }
+        #searchInput { padding: 8px; width: 300px; border: 1px solid #ccc; border-radius: 4px; }
+        #bookList { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 20px; }
+        .book-card { background: white; border: 1px solid #ddd; border-radius: 5px; padding: 15px; width: 250px; cursor: pointer; }
+        .book-card:hover { box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .status { font-weight: bold; }
+        .disponible { color: green; }
+        .prestado { color: red; }
+        #noResults { color: #888; font-style: italic; margin-top: 20px; display: none; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 20px; border-radius: 5px; width: 400px; max-width: 90%; position: relative; }
+        .close { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h1>Catálogo de Libros</h1>
+
+    <a href="registro.html">Volver al Registro de Usuarios</a>
+    <br><br>
+    
+    <input type="text" id="searchInput" placeholder="Buscar por título o autor...">
+    
+    <div id="bookList"></div>
+    
+    <div id="noResults">No se encontraron libros.</div>
+
+    <div class="modal" id="bookModal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p><strong>Autor:</strong> <span id="modalAuthor"></span></p>
+            <p><strong>Estado:</strong> <span id="modalStatus"></span></p>
+            <p><strong>Descripción:</strong></p>
+            <p id="modalDesc"></p>
+        </div>
+    </div>
+
+    <script>
+        const baseDeDatosLibros = [
+            { id: 1, titulo: "Cien años de soledad", autor: "Gabriel García Márquez", disponible: true, descripcion: "Una obra maestra de la literatura latinoamericana." },
+            { id: 2, titulo: "1984", autor: "George Orwell", disponible: false, descripcion: "Novela distópica sobre un régimen totalitario." },
+            { id: 3, titulo: "El Principito", autor: "Antoine de Saint-Exupéry", disponible: true, descripcion: "Un clásico infantil para todas las edades." },
+            { id: 4, titulo: "Don Quijote de la Mancha", autor: "Miguel de Cervantes", disponible: true, descripcion: "La obra cumbre de la literatura española." },
+            { id: 5, titulo: "La sombra del viento", autor: "Carlos Ruiz Zafón", disponible: false, descripcion: "Misterio y pasión en la Barcelona de posguerra." }
+        ];
+
+        const bookList = document.getElementById('bookList');
+        const searchInput = document.getElementById('searchInput');
+        const noResults = document.getElementById('noResults');
+        const modal = document.getElementById('bookModal');
+
+        function renderizarLibros(libros) {
+            bookList.innerHTML = '';
+            if (libros.length === 0) {
+                noResults.style.display = 'block';
+                return;
+            } else {
+                noResults.style.display = 'none';
+            }
+            libros.forEach(libro => {
+                const estadoClase = libro.disponible ? 'disponible' : 'prestado';
+                const estadoTexto = libro.disponible ? 'Disponible' : 'Prestado';
+                const card = document.createElement('div');
+                card.className = 'book-card';
+                card.onclick = () => mostrarDetalles(libro.id);
+                card.innerHTML = `
+                    <h3>${libro.titulo}</h3>
+                    <p><strong>Autor:</strong> ${libro.autor}</p>
+                    <p><strong>Estado:</strong> <span class="status ${estadoClase}">${estadoTexto}</span></p>
+                `;
+                bookList.appendChild(card);
+            });
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const texto = e.target.value.toLowerCase();
+            const filtrados = baseDeDatosLibros.filter(libro => 
+                libro.titulo.toLowerCase().includes(texto) || 
+                libro.autor.toLowerCase().includes(texto)
+            );
+            renderizarLibros(filtrados);
+        });
+
+        function mostrarDetalles(id) {
+            const libro = baseDeDatosLibros.find(l => l.id === id);
+            if (libro) {
+                document.getElementById('modalTitle').innerText = libro.titulo;
+                document.getElementById('modalAuthor').innerText = libro.autor;
+                document.getElementById('modalStatus').innerText = libro.disponible ? 'Disponible' : 'Prestado';
+                document.getElementById('modalDesc').innerText = libro.descripcion;
+                modal.style.display = 'flex';
+            }
+        }
+
+        function cerrarModal() {
+            modal.style.display = 'none';
+        }
+
+        renderizarLibros(baseDeDatosLibros);
+    </script>
+</body>
+</html>
+
+
