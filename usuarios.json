@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "nombre": "Carlos Mendoza",
+    "codigo_estudiante": "U20241001",
+    "carrera": "Ingeniería de Sistemas e Informática",
+    "correo": "U20241001@utp.edu.pe",
+    "estado": "activo"
+  },
+  {
+    "id": 2,
+    "nombre": "Lucía Fernández",
+    "codigo_estudiante": "U20241002",
+    "carrera": "Administración de Empresas",
+    "correo": "U20241002@utp.edu.pe",
+    "estado": "activo"
+  },
+  {
+    "id": 3,
+    "nombre": "Andrés Torres",
+    "codigo_estudiante": "U20241003",
+    "carrera": "Ingeniería Industrial",
+    "correo": "U20241003@utp.edu.pe",
+    "estado": "inactivo"
+  },
+  {
+    "id": 4,
+    "nombre": "Mariana Castillo",
+    "codigo_estudiante": "U20241004",
+    "carrera": "Contabilidad",
+    "correo": "U20241004@utp.edu.pe",
+    "estado": "activo"
+  }
+]
